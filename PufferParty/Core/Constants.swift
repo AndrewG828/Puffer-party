@@ -46,9 +46,10 @@ enum Party {
         let collapsed = raw.split(whereSeparator: { $0.isWhitespace }).joined(separator: " ")
         let name = String(collapsed.prefix(maxNameLength))
         guard name.count >= 2 else { return nil }
-        let ok = name.unicodeScalars.allSatisfy { s in
-            s.properties.isAlphabetic || s.properties.numericType != nil
-                || s == " " || s == "_" || s == "." || s == "'" || s == "-"
+        let punctuation: Set<Unicode.Scalar> = [" ", "_", ".", "'", "-"]
+        let ok = name.unicodeScalars.allSatisfy { (s: Unicode.Scalar) -> Bool in
+            if punctuation.contains(s) { return true }
+            return s.properties.isAlphabetic || s.properties.numericType != nil
         }
         return ok ? name : nil
     }

@@ -126,7 +126,7 @@ struct JoinRingView: View {
                                 character = id
                                 PartyStorage.character = id
                             },
-                            onSubmit: { session.joinFromForm(name: name, character: character) },
+                            submit: { session.joinFromForm(name: name, character: character) },
                             focus: $focus,
                             focusValue: .name
                         )

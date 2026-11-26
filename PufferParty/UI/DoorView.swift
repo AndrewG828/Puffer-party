@@ -351,7 +351,7 @@ struct DoorView: View {
                 character: model.character,
                 streak: model.streak,
                 onCharacter: { model.setCharacter($0) },
-                onSubmit: { model.quickPlay(rated: false) },
+                submit: { model.quickPlay(rated: false) },
                 focus: $focus,
                 focusValue: .name
             )
@@ -414,9 +414,7 @@ struct DoorView: View {
                 }
             }
             if let info = model.rating, info.rating != nil {
-                Text(info.merged > 0
-                     ? "\(info.merged) \(info.merged == 1 ? "game" : "games") from this device added to your account"
-                     : info.account ? "your rating is saved to your account" : "your rating is saved on this device")
+                Text(ratingHome(info))
                     .font(.pixel(16))
                     .foregroundStyle(Palette.drift)
             }
@@ -503,6 +501,14 @@ struct DoorView: View {
         .pixelPanel()
     }
 
+    private func ratingHome(_ info: RatingInfo) -> String {
+        if info.merged > 0 {
+            let games: String = info.merged == 1 ? "game" : "games"
+            return "\(info.merged) \(games) from this device added to your account"
+        }
+        return info.account ? "your rating is saved to your account" : "your rating is saved on this device"
+    }
+
     @ViewBuilder
     private func failureView(_ section: DoorModel.Section) -> some View {
         if let failure = model.failure, failure.section == section {
@@ -566,7 +572,7 @@ struct CodeInput<F: Hashable>: View {
     @Binding var code: String
     var focus: FocusState<F?>.Binding
     let focusValue: F
-    var onSubmit: () -> Void
+    var submit: () -> Void
 
     var body: some View {
         ZStack {
@@ -579,7 +585,7 @@ struct CodeInput<F: Hashable>: View {
             .keyboardType(.asciiCapable)
             .submitLabel(.go)
             .focused(focus, equals: focusValue)
-            .onSubmit(onSubmit)
+            .onSubmit { submit() }
             .foregroundStyle(.clear)
             .tint(.clear)
             .accessibilityLabel("Room code")

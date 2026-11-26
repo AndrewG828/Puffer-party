@@ -25,7 +25,7 @@ struct AnswerField: UIViewRepresentable {
         field.smartQuotesType = .no
         field.smartDashesType = .no
         field.smartInsertDeleteType = .no
-        field.textContentType = .none
+        field.textContentType = nil
         field.returnKeyType = .send
         field.enablesReturnKeyAutomatically = true
         field.keyboardAppearance = .dark

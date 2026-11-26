@@ -7,7 +7,7 @@ struct IdentityFields<F: Hashable>: View {
     let character: String
     let streak: Int
     var onCharacter: (String) -> Void
-    var onSubmit: () -> Void
+    var submit: () -> Void
     var focus: FocusState<F?>.Binding
     let focusValue: F
 
@@ -25,7 +25,7 @@ struct IdentityFields<F: Hashable>: View {
                 .textContentType(.nickname)
                 .submitLabel(.go)
                 .focused(focus, equals: focusValue)
-                .onSubmit(onSubmit)
+                .onSubmit { submit() }
                 .onChange(of: name) { _, value in
                     if value.count > Party.maxNameLength { name = String(value.prefix(Party.maxNameLength)) }
                 }
